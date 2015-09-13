@@ -10,6 +10,8 @@ from sknn.mlp import Classifier, Layer, Convolution
 from sknn.ae import AutoEncoder, Layer as ae
 import pickle
 import time
+import sys
+import logging
 
 from flask.ext.cors import CORS
 
@@ -19,6 +21,10 @@ CORS(app)
 api = Api(app)
 
 
+logging.basicConfig(
+            format="%(message)s",
+            level=logging.DEBUG,
+            stream=sys.stdout)
 
 
 def nn(config):
@@ -62,13 +68,6 @@ def nn(config):
         x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=50)
         x_train = scale(x_train)
         x_test = scale(x_test)
-        x = AutoEncoder(
-                layers = [
-                ae(activation="Tanh", units=128)
-                ],
-            learning_rate = float(config["learning_rate"]),
-            n_iter=int(config["num_iter"]))
-        x.fit(X)
 
         y = Classifier(
             layers = nLayers,
@@ -76,7 +75,6 @@ def nn(config):
             n_iter=int(config["num_iter"])
         )
 
-        x.transfer(y)
         y.fit(x_train, y_train)
         score = y.score(x_test, y_test)
         current_nn = y
@@ -106,13 +104,8 @@ class nLayer:
         self.size = 0
         self.pieces = -1
 
-class aenLayer:
-    def __init__(self):
-        self.activation = "null"
-        self.size = 0
 
 layers = []
-aelayers = []
 class Train(Resource):
     def get(self):
         global current_nn
@@ -124,7 +117,6 @@ class Train(Resource):
         
         config = {}
         layers = []
-        aelayers = []
         config["dataset"] = request.json["dataset"]
         config["num_iter"] = request.json["num_iter"]
         config["learning_rate"] = request.json["learning_rate"]
@@ -134,11 +126,6 @@ class Train(Resource):
              layers[idx].size = val["size"]
              if layers[idx].ltype == "Maxout":
                  layers[idx].pieces = val["pieces"]
-        for idx,val in enumerate(request.json["ae_layers"]):
-            aelayers.append(aenLayer())
-            aelayers[idx].activation = val["activation"]
-            aelayers[idx].size = val["size"]
-        config["aelayers"] = aelayers
         config["layers"] = layers
         score,current_nn = nn(config)
         print current_nn
