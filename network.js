@@ -18,11 +18,12 @@ Layer.prototype.getSpacing = function() {
 
 app.controller('ctrl', function ($scope, $http) {
   s = $scope;
-  $scope.nn_layers = [new Layer(5, 'linear'), new Layer(50, 'linear')]
+  $scope.nn_layers = [new Layer(5, 'linear'), new Layer(1, 'linear')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
   $scope.num_iter = 15;
   $scope.learning_rate = 3;
   $scope.accuracyScore = 0;
+  $scope.dataset = null
   $scope.addLayer = function(type) {
     bootbox.prompt("How many neurons in this layer?", function(result) {
       if (result == "" || result === null) return;
@@ -36,50 +37,32 @@ app.controller('ctrl', function ($scope, $http) {
   }
 
   String.prototype.capitalizeFirstLetter = function() {
-      return this.charAt(0).toUpperCase() + this.slice(1);
+    return this.charAt(0).toUpperCase() + this.slice(1);
   }
+
+  $scope.results = []
 
   $scope.trainNN = function() {
     var l = Ladda.create(
       document.querySelector( '#trainBtn' )
-    );
+      );
 
     l.start();
 
     var data = {
       num_iter: $scope.num_iter.toString(),
       learning_rate: (0.005).toString(),
-      dataset: getFileName() || "wine",
+      dataset: $scope.dataset,
       layers: $scope.nn_layers.map(function(a) { return {type:a.type.capitalizeFirstLetter(), size: a.size}})
     }
     // debugger;
     $http.post('http://localhost:5000/train', data).
-      then(function(response) {
-        $scope.accuracyScore = Math.round(parseFloat(response.data) * 10000) / 100
-        l.stop();
-  }, function(response) {
-        l.stop();
-  });
-
-    // $.ajax({
-    //     type: "POST",
-    //     url: "http://localhost:5000/train",
-    //     dataType: 'json',
-    //     data:JSON.stringify({
-    //       "num_iter":"10",
-    //       "learning_rate":"0.005",
-    //       "dataset":"wine",
-    //       "layers":
-    //          [
-    //             {"type":"Linear","size":5},
-    //             {"type":"Linear","size":1}
-    //         ]
-    //     }),
-    //     contentType: "application/json",
-    //     complete: function (d) {
-    //       debugger;
-    //     }
-    // });
+    then(function(response) {
+      $scope.accuracyScore = Math.round(parseFloat(response.data) * 10000) / 100
+      l.stop();
+    }, function(response) {
+      l.stop();
+    });
   }
 });
 
@@ -89,6 +72,13 @@ $(function() {
   $('#upload_link').click(function(){
     $('#myFile').click();
   })
+  $.mobileSelect.defaults = {
+   title: 'Sample Datasets',
+   onClose: function() {
+    console.log('onClose: '+this.val());
+  }
+}
+$('.mobileSelect').mobileSelect()
 })
 
 function getFileName() {
@@ -96,8 +86,8 @@ function getFileName() {
   if ('files' in x) {
     for (var i = 0; i < x.files.length; i++) {
       if ('name' in file) {
-          return file.name;
-        }
+        return file.name;
       }
     }
+  }
 }
