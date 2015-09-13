@@ -16,7 +16,7 @@ Layer.prototype.getSpacing = function() {
   return 350 / (this.getNumberOfCircles() + 1);
 }
 
-app.controller('ctrl', function ($scope) {
+app.controller('ctrl', function ($scope, $http) {
   $scope.nn_layers = [new Layer(5, 'linear'), new Layer(50, 'linear')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
   $scope.num_iter = 10;
@@ -31,9 +31,75 @@ app.controller('ctrl', function ($scope) {
   $scope.removeLayer = function(index) {
     $scope.nn_layers.splice(index, 1)
   }
+
+  String.prototype.capitalizeFirstLetter = function() {
+      return this.charAt(0).toUpperCase() + this.slice(1);
+  }
+  $scope.trainNN = function() {
+    var data = {
+      num_iter: $scope.num_iter.toString(),
+      learning_rate: ($scope.learning_rate || 0.005).toString(),
+      dataset: getFileName() || "wine",
+      layers: $scope.nn_layers.map(function(a) { return {type:a.type.capitalizeFirstLetter(), size: a.size}})
+    }
+    // debugger;
+    $http.post('http://localhost:5000/train', {
+          "num_iter":"10",
+          "learning_rate":"0.005",
+          "dataset":"wine",
+          "layers":
+             [
+                {"type":"Linear","size":5},
+                {"type":"Linear","size":1}
+            ]
+        }).
+      then(function(response) {
+        debugger;
+    // this callback will be called asynchronously
+    // when the response is available
+  }, function(response) {
+        debugger;
+    // called asynchronously if an error occurs
+    // or server returns response with an error status.
+  });
+
+    // $.ajax({
+    //     type: "POST",
+    //     url: "http://localhost:5000/train",
+    //     dataType: 'json',
+    //     data:JSON.stringify({
+    //       "num_iter":"10",
+    //       "learning_rate":"0.005",
+    //       "dataset":"wine",
+    //       "layers":
+    //          [
+    //             {"type":"Linear","size":5},
+    //             {"type":"Linear","size":1}
+    //         ]
+    //     }),
+    //     contentType: "application/json",
+    //     complete: function (d) {
+    //       debugger;
+    //     }
+    // });
+  }
 });
 
 
 $(function() {
   Ladda.bind( 'input[type=submit], button' );
+  $('#upload_link').click(function(){
+    $('#myFile').click();
+  })
 })
+
+function getFileName() {
+  var x = document.getElementById("myFile");
+  if ('files' in x) {
+    for (var i = 0; i < x.files.length; i++) {
+      if ('name' in file) {
+          return file.name;
+        }
+      }
+    }
+}

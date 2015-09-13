@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_restful import Resource, Api, reqparse
 import numpy as np
 from sklearn.preprocessing import scale
@@ -6,7 +6,11 @@ from sklearn.cross_validation import train_test_split
 from sklearn.metrics import accuracy_score
 from sknn.mlp import Classifier, Layer, Convolution
 
+from flask.ext.cors import CORS
+
 app = Flask(__name__)
+CORS(app)
+
 api = Api(app)
 
 def nn(config):
@@ -66,6 +70,8 @@ class Train(Resource):
     def get(self):
         return "test"
     def post(self):
+        print request.json
+        
         config = {}
         layers = []
         config["dataset"] = request.json["dataset"]
@@ -79,7 +85,16 @@ class Train(Resource):
         score = nn(config)
         return score
 
+
 api.add_resource(Train, "/train")
+
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  return response
+
 
 if __name__ == '__main__':
     app.run(debug=True)
