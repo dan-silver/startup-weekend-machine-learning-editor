@@ -24,3 +24,8 @@ app.controller('ctrl', function ($scope) {
     $scope.nn_layers.splice(index, 1)
   }
 });
+
+
+$(function() {
+  Ladda.bind( 'input[type=submit], button' );
+})
