@@ -40,6 +40,21 @@ def nn(config):
         score = x.score(x_test, y_test)
         print score
         return score
+    if config["dataset"] == u"heart":
+        data = np.loadtxt(fname="heart_disease.csv", delimiter=',',
+                skiprows=1)
+        X, Y = data[:, :-1], data[:, -1]
+        x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=50)
+        x_train = scale(x_train)
+        x_test = scale(x_test)
+        x = Classifier(
+            layers = nLayers,
+            learning_rate = float(config["learning_rate"]),
+            n_iter=int(config["num_iter"]))
+        x.fit(x_train, y_train)
+        score = x.score(x_test, y_test)
+        print score
+        return score
 
 class nLayer:
     def __init__(self):
