@@ -317,10 +317,14 @@
             <div class="row">
                 <div class="col-lg-12">
                         <ul id="sortable" ui-sortable ng-model="nn_layers">
-                            <li class="layer" ng-repeat="layer in nn_layers">{{layer.size}} neurons in this layer
+                            <li class="layer" ng-repeat="layer in nn_layers">
+                                <svg width="50" height="50">
+                                    <ellipse cx="10" cy="10" rx="10" ry="10"/>
+                                </svg>
                                 <div class="actions">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="removeLayer($index)"></span>
                                 </div>
+                                <h3 class="layerNumber">{{layer.size}}</h3>
                             </li>
                         </ul>
 
