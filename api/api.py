@@ -1,3 +1,4 @@
+current_nn = -1
 from flask import Flask, request, send_from_directory
 from flask_restful import Resource, Api, reqparse
 import numpy as np
@@ -18,7 +19,7 @@ CORS(app)
 api = Api(app)
 
 
-current_nn = None
+
 
 def nn(config):
     print config
@@ -53,7 +54,7 @@ def nn(config):
         score = x.score(x_test, y_test)
         current_nn = x
         print score
-        return score
+        return score, ""
     if config["dataset"] == u"heart":
         data = np.loadtxt(fname="heart_disease.csv", delimiter=',',
                 skiprows=1)
@@ -80,7 +81,7 @@ def nn(config):
         score = y.score(x_test, y_test)
         current_nn = y
         print score
-        return score
+        return score, ""
     if config["dataset"] == "handwrite":
         print "Downloading data..."
         data = datasets.fetch_mldata("MNIST original")
@@ -96,9 +97,7 @@ def nn(config):
 
         x.fit(x_train, y_train)
         score = x.score(x_test, y_test)
-        current_nn = x
-
-        return score
+        return score, x
 
 
 class nLayer:
@@ -116,9 +115,12 @@ layers = []
 aelayers = []
 class Train(Resource):
     def get(self):
-        return "test"
+        global current_nn
+        samples = pickle.load(open ("samples.pkl", 'rb'))
+        return current_nn.predict(samples[0][0])
     def post(self):
         print request.json
+        global current_nn
         
         config = {}
         layers = []
@@ -138,26 +140,29 @@ class Train(Resource):
             aelayers[idx].size = val["size"]
         config["aelayers"] = aelayers
         config["layers"] = layers
-        score = nn(config)
-        fname = "nn_" +time.strftime("%Y%m%d-%H%M%S") + ".pkl";
-        f = open(fname, "wb")
-        pickle.dump(current_nn, f)
-        return [score, fname]
-
-<<<<<<< HEAD
+        score,current_nn = nn(config)
+        print current_nn
+        return score
 class Test(Resource):
     def post(self):
-        config = {}
-        nn_file = request.json["nn_tag"]
-        print nn_file
-        nn = pickle.load(nn_file)
-        samples = pickle.load("samples.pkl")
-        print samples[0][1]
-        return nn.predict(samples[0][0])
-        
-=======
+        global current_nn
+        test_data = request.json["data"]
+        samples = pickle.load(open ("samples.pkl", 'rb'))
+        t = samples[0][0]
+        t = t.reshape(1, 784) 
 
->>>>>>> b79d2c952b0e610e5a88a1af8d2e134da7af1646
+        dat = np.zeros((1, 784));
+        i=0
+        for x in test_data:
+            dat[0][i] = x;
+            i+=1;
+        print dat
+        print t
+
+        score = current_nn.predict(t)
+        print score
+        return score[0][0]
+        
 api.add_resource(Train, "/train")
 api.add_resource(Test, "/test")
 
