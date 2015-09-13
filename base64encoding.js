@@ -1,9 +1,9 @@
 function getPixelData() {
     var img = $(".thumb")[$(".thumb").length -1 ];
     var canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+    canvas.width = 28;//img.width;
+    canvas.height = 28;//img.height;
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
     var pixels = [];
 
     for (i = 0; i < canvas.height; i++) { 
@@ -14,5 +14,5 @@ function getPixelData() {
         }
     }
 
-    console.log(pixels);
+    return pixels;
 }
