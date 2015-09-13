@@ -1,5 +1,7 @@
 var app = angular.module('app', ['ui.sortable']);
-var height = 350
+
+var maxNeurons = 15;
+
 
 var Layer = function (size, type) {
   this.size = size
@@ -7,16 +9,15 @@ var Layer = function (size, type) {
 };
 
 Layer.prototype.getNumberOfCircles = function() {
-  return this.size > 10 ? 10 : this.size;
+  return this.size > maxNeurons ? maxNeurons : this.size;
 };
 
 Layer.prototype.getSpacing = function() {
-  return height / (this.getNumberOfCircles() + 1);
+  return 350 / (this.getNumberOfCircles() + 1);
 }
 
 app.controller('ctrl', function ($scope) {
-  $scope.phones = 45
-  $scope.nn_layers = [new Layer(5), new Layer(50)]
+  $scope.nn_layers = [new Layer(5, 'linear'), new Layer(50, 'linear')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
 
   $scope.addLayer = function(type) {
