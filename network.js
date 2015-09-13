@@ -5,7 +5,7 @@ var maxNeurons = 15;
 
 var Layer = function (size, type) {
   this.size = size
-  this.type = type
+  this.type = type.toLowerCase()
 };
 
 Layer.prototype.getNumberOfCircles = function() {
