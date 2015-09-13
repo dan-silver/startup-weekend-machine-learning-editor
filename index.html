@@ -272,7 +272,8 @@
                         <ul id="sortable" ui-sortable ng-model="nn_layers">
                             <li class="layer" ng-repeat="layer in nn_layers">
                                 <svg width="50" height="500">
-                                    <ellipse ng-cloak cx="10" ng-attr-cy="{{$index * 35 + 15}}" rx="10" ry="10" ng-repeat="n in [].constructor(layer.size) track by $index"/>
+                                    
+                                <circle ng-cloak cx="10" ng-attr-cy="{{$index * 25 + 10}}" r="5" ng-repeat="n in [].constructor(layer.size).slice(0,10) track by $index" stroke="black" stroke-width="2" fill="red" />
                                 </svg>
                                 <div class="actions">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="removeLayer($index)"></span>
