@@ -27,10 +27,6 @@ app.controller('ctrl', function ($scope) {
     })
   }
 
-  setInterval(function() {
-    $scope.$apply()
-  }, 250)
-
   $scope.removeLayer = function(index) {
     $scope.nn_layers.splice(index, 1)
   }
