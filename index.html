@@ -20,6 +20,8 @@
     <!-- Custom CSS -->
     <link href="dist/css/sb-admin-2.css" rel="stylesheet">
     <link href="js/rzslider.min.css" rel= "stylesheet">
+    <link href="dropzone.min.css" rel="stylesheet">
+    <link href="basic.min.css" rel="stylesheet">
 
 
     <!-- Custom Fonts -->
@@ -54,6 +56,8 @@
     <script type="text/javascript" src="node_modules/bootbox/bootbox.min.js"></script>
     <script type="text/javascript" src="network.js"></script>
     <script type="text/javascript" src="progressbar.js"></script>
+    <script type="text/javascript" src="dropzone-amd-module.min.js"></script>
+    <script type="text/javascript" src="dropzone.min.js"></script>
     <script type="text/javascript" src="spin.min.js"></script>
         <script type="text/javascript" src="ladda.min.js"></script>
     <link href="ladda.min.css" rel="stylesheet">
@@ -299,6 +303,13 @@
                         </ul>
 
 
+                </div>
+                <div style="float: right;">
+                    <form action="/file-upload" class="dropzone">
+                        <div class="fallback">
+                            <input name="file" type="file" />
+                        </div>
+                    </form>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
