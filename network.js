@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.sortable']);
+var app = angular.module('app', ['ui.sortable','rzModule']);
 
 var maxNeurons = 15;
 
@@ -19,7 +19,7 @@ Layer.prototype.getSpacing = function() {
 app.controller('ctrl', function ($scope) {
   $scope.nn_layers = [new Layer(5, 'linear'), new Layer(50, 'linear')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
-
+  $scope.num_iter = 10;
   $scope.addLayer = function(type) {
     bootbox.prompt("How many neurons in this layer?", function(result) {
       if (result == "" || result === null) return;
