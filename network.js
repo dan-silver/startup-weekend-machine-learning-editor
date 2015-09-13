@@ -5,6 +5,8 @@ var Layer = function (size, type) {
   this.type = type
 };
 
+
+
 app.controller('ctrl', function ($scope) {
   $scope.phones = 45
   $scope.nn_layers = [new Layer(5), new Layer(20)]
@@ -15,9 +17,9 @@ app.controller('ctrl', function ($scope) {
       if (result == "" || result === null) return;
       $scope.nn_layers.push(new Layer(result, type))
       $scope.$apply()
-
     })
   }
+
   $scope.removeLayer = function(index) {
     $scope.nn_layers.splice(index, 1)
   }
