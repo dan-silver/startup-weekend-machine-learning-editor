@@ -79,7 +79,7 @@
 
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                        <button class="ladda-button" data-color="green" data-style="expand-right"><span class="ladda-label">Train Neural Network</span></button>
+                        <button class="ladda-button" ng-click="trainNN()" data-color="green" data-style="expand-right"><span class="ladda-label">Train Neural Network</span></button>
                     <!-- /.dropdown-messages -->
                 </li>
                 <!-- /.dropdown -->
@@ -245,8 +245,8 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="#"><i class="fa fa-table fa-fw"></i> Upload Training Data</a>
-                            <input style="display:none" type="file" id="myFile" multiple size="50" onchange="myFunction()">
+                            <a href="#" id="upload_link"><i class="fa fa-table fa-fw"></i> Upload Training Data</a>
+                            <input style="display:none" type="file" id="myFile" multiple size="50" onchange="uploadFile()">
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-edit fa-fw"></i> Add Layers<span class="fa arrow"></span></a>
