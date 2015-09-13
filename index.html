@@ -21,6 +21,8 @@
     <link href="dist/css/sb-admin-2.css" rel="stylesheet">
     <link href="js/rzslider.min.css" rel= "stylesheet">
     <link href="js/bootstrap-fullscreen-select.css" rel= "stylesheet">
+    <link href="dropzone.min.css" rel="stylesheet">
+    <link href="basic.min.css" rel="stylesheet">
 
 
     <!-- Custom Fonts -->
@@ -53,9 +55,11 @@
         <script type="text/javascript" src="sortable.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-fullscreen-select.min.js"></script>
 
-        <script type="text/javascript" src="node_modules/bootbox/bootbox.min.js"></script>
-        <script type="text/javascript" src="network.js"></script>
-        <script type="text/javascript" src="spin.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootbox/bootbox.min.js"></script>
+    <script type="text/javascript" src="network.js"></script>
+    <script type="text/javascript" src="progressbar.js"></script>
+    <script type="text/javascript" src="dropzone.min.js"></script>
+    <script type="text/javascript" src="spin.min.js"></script>
         <script type="text/javascript" src="ladda.min.js"></script>
         <link href="ladda.min.css" rel="stylesheet">
 
@@ -308,17 +312,26 @@
                         </div>
                     </div>
                     <div class="col-lg-3 results-col pull-right">
-                        <h3>Test Results</h3>
-                        <table class="table table-striped table-hover">
-                            <tr>
-                                <th>Data</th>
-                                <th>Result</th>
-                            </tr>
-                            <tr ng-repeat="history in history">
-                                <td>{{history.data}}</td>
-                                <td>{{history.result}}</td>
-                            </tr>
-                        </table>
+                        <h3>Test the Neural Network</h3>
+                        <form action="/file-upload" class="dropzone">
+                            <div class="fallback">
+                                <input name="file" type="file" />
+                            </div>
+                        </form>
+                        <hr>
+                        <div ng-if="history">
+                            <h4>Results</h4>
+                            <table class="table table-striped table-hover">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Result</th>
+                                </tr>
+                                <tr ng-repeat="history in history">
+                                    <td>{{history.data}}</td>
+                                    <td>{{history.result}}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
