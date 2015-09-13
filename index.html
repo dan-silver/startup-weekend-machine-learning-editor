@@ -80,7 +80,7 @@
 
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                        <button class="ladda-button" ng-click="trainNN()" data-color="green" data-style="expand-right"><span class="ladda-label">Train Neural Network</span></button>
+                        <button class="ladda-button" id="trainBtn" ng-click="trainNN()" data-color="green" data-style="expand-right"><span class="ladda-label">Train Neural Network</span></button>
                     <!-- /.dropdown-messages -->
                 </li>
                 <!-- /.dropdown -->
@@ -304,22 +304,17 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div>
+                <div ng-if="accuracyScore">
                     <div class="progress vertical" style="width:100px">
-                        <div id="progressBar" class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                        <div id="progressBar" class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{accuracyScore}}" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
                             <span class="sr-only">60% Complete (warning)</span>
                         </div>
                     </div>
-                    <h1 class="accuracyScore">94%</h1>
+                    <h1 class="accuracyScore">{{accuracyScore}}%</h1>
                 </div>
-                <!-- /.col-lg-4 -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
-
     </div>
-    <!-- /#wrapper -->
 
 </body>
 

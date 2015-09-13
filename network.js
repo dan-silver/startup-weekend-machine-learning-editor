@@ -1,5 +1,5 @@
 var app = angular.module('app', ['ui.sortable','rzModule']);
-
+var s;
 var maxNeurons = 15;
 
 
@@ -17,10 +17,12 @@ Layer.prototype.getSpacing = function() {
 }
 
 app.controller('ctrl', function ($scope, $http) {
+  s = $scope;
   $scope.nn_layers = [new Layer(5, 'linear'), new Layer(50, 'linear')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
   $scope.num_iter = 15;
   $scope.learning_rate = 3;
+  $scope.accuracyScore = 0;
   $scope.addLayer = function(type) {
     bootbox.prompt("How many neurons in this layer?", function(result) {
       if (result == "" || result === null) return;
@@ -36,7 +38,14 @@ app.controller('ctrl', function ($scope, $http) {
   String.prototype.capitalizeFirstLetter = function() {
       return this.charAt(0).toUpperCase() + this.slice(1);
   }
+
   $scope.trainNN = function() {
+    var l = Ladda.create(
+      document.querySelector( '#trainBtn' )
+    );
+
+    l.start();
+
     var data = {
       num_iter: $scope.num_iter.toString(),
       learning_rate: (0.005).toString(),
@@ -46,13 +55,10 @@ app.controller('ctrl', function ($scope, $http) {
     // debugger;
     $http.post('http://localhost:5000/train', data).
       then(function(response) {
-        debugger;
-    // this callback will be called asynchronously
-    // when the response is available
+        $scope.accuracyScore = Math.round(parseFloat(response.data) * 10000) / 100
+        l.stop();
   }, function(response) {
-        debugger;
-    // called asynchronously if an error occurs
-    // or server returns response with an error status.
+        l.stop();
   });
 
     // $.ajax({
@@ -79,7 +85,7 @@ app.controller('ctrl', function ($scope, $http) {
 
 
 $(function() {
-  Ladda.bind( 'input[type=submit], button' );
+  // Ladda.bind( 'input[type=submit], button' );
   $('#upload_link').click(function(){
     $('#myFile').click();
   })
