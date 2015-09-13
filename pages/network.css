@@ -1,0 +1,42 @@
+.editor {
+	border-radius: 5px;
+	margin-top: 20px;
+}
+
+.list {
+  display: inline-block;
+  width: 5em;
+  background: #CCC;
+}
+
+.layer {
+	width: 200px;
+	height: 400px;
+	background: white;
+	float: left;
+	margin: 15px;
+	padding: 15px;
+	display: inline-block;
+	border-radius: 5px;
+	position: relative;
+	border: 1px solid transparent;
+	background: #F8F8F8;
+}
+
+.layer:hover {
+	border: 1px dashed gray;
+}
+
+.layer .actions {
+	opacity: 0;
+	position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+    padding: 5px;
+    transition: opacity .1s ease-out;
+}
+
+.layer:hover .actions {
+	opacity: 1;
+}
