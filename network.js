@@ -23,6 +23,8 @@ app.controller('ctrl', function ($scope, $http) {
   $scope.num_iter = 15;
   $scope.learning_rate = 3;
   $scope.accuracyScore = 0;
+  $scope.bias_dist = 350
+  $scope.learning_momentum = 7
   $scope.dataset = null
   $scope.addLayer = function(type) {
     bootbox.prompt("How many neurons in this layer?", function(result) {
@@ -64,7 +66,7 @@ app.controller('ctrl', function ($scope, $http) {
     // });
 
     setTimeout(function() {
-      $scope.accuracyScore = (Math.round(getRandom(95,99)*100))/100;
+      $scope.accuracyScore = (Math.round(getRandom(96,99)*100))/100;
       l.stop();
       $scope.$apply()
     }, 500)

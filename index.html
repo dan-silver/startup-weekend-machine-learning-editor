@@ -279,7 +279,9 @@
                     <!-- /.sidebar-collapse -->
                     <div class="settings">
                         <h4>Number Iterations: {{num_iter}}</h4><rzslider rz-slider-model="num_iter" rz-slider-ceil="30"></rzslider>
+                        <h4>Bias Distribution: {{bias_dist}}</h4><rzslider rz-slider-model="bias_dist" rz-slider-ceil="400"></rzslider>
                         <h4>Learning Rate: {{learning_rate}}</h4><rzslider rz-slider-model="learning_rate" rz-slider-ceil="5"></rzslider>
+                        <h4>Learning Momentum: {{learning_momentum}}</h4><rzslider rz-slider-model="learning_momentum" rz-slider-ceil="25"></rzslider>
                     </div>
 
                 </div>
@@ -342,7 +344,7 @@
                                 <span class="sr-only">60% Complete (warning)</span>
                             </div>
                         </div>
-                        <h1 class="accuracyScore">{{accuracyScore}}%</h1>
+                        <h1 class="accuracyScore">Accuracy: {{accuracyScore}}%</h1>
                     </div>
                 </div>
             </div>
