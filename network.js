@@ -1,5 +1,5 @@
-var app = angular.module('app', ['ui.sortable']);
-
+var app = angular.module('app', ['ui.sortable','rzModule']);
+var s;
 var maxNeurons = 15;
 
 
@@ -16,10 +16,14 @@ Layer.prototype.getSpacing = function() {
   return 350 / (this.getNumberOfCircles() + 1);
 }
 
-app.controller('ctrl', function ($scope) {
-  $scope.nn_layers = [new Layer(5, 'linear'), new Layer(50, 'linear')]
+app.controller('ctrl', function ($scope, $http) {
+  s = $scope;
+  $scope.nn_layers = [new Layer(5, 'linear'), new Layer(1, 'linear')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
-
+  $scope.num_iter = 15;
+  $scope.learning_rate = 3;
+  $scope.accuracyScore = 0;
+  $scope.dataset = null
   $scope.addLayer = function(type) {
     bootbox.prompt("How many neurons in this layer?", function(result) {
       if (result == "" || result === null) return;
@@ -31,9 +35,92 @@ app.controller('ctrl', function ($scope) {
   $scope.removeLayer = function(index) {
     $scope.nn_layers.splice(index, 1)
   }
+
+  String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  }
+
+  $scope.results = []
+
+  $scope.trainNN = function() {
+    var l = Ladda.create(
+      document.querySelector( '#trainBtn' )
+      );
+
+    l.start();
+
+    var data = {
+      num_iter: $scope.num_iter.toString(),
+      learning_rate: (0.005).toString(),
+      dataset: $scope.dataset,
+      layers: $scope.nn_layers.map(function(a) { return {type:a.type.capitalizeFirstLetter(), size: a.size}})
+    }
+    // debugger;
+    $http.post('http://localhost:5000/train', data).
+    then(function(response) {
+      $scope.accuracyScore = Math.round(parseFloat(response.data) * 10000) / 100
+      l.stop();
+    }, function(response) {
+      l.stop();
+    });
+
+  }
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          debugger;
+          $scope.results.push({data: e.target.result, result: null})
+          $scope.$apply()
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
 });
 
 
 $(function() {
-  Ladda.bind( 'input[type=submit], button' );
+  // Ladda.bind( 'input[type=submit], button' );
+  $('#upload_link').click(function(){
+    $('#myFile').click();
+  })
+  $.mobileSelect.defaults = {
+   title: 'Sample Datasets',
+   onClose: function() {
+    console.log('onClose: '+this.val());
+  }
+}
+$('.mobileSelect').mobileSelect()
+
+
+
+
 })
+
+function getFileName() {
+  var x = document.getElementById("myFile");
+  if ('files' in x) {
+    for (var i = 0; i < x.files.length; i++) {
+      if ('name' in file) {
+        return file.name;
+      }
+    }
+  }
+}
+

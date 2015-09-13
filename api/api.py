@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_restful import Resource, Api, reqparse
 import numpy as np
 from sklearn.preprocessing import scale
@@ -10,7 +10,11 @@ from sknn.ae import AutoEncoder, Layer as ae
 import pickle
 import time
 
+from flask.ext.cors import CORS
+
 app = Flask(__name__)
+CORS(app)
+
 api = Api(app)
 
 
@@ -114,6 +118,8 @@ class Train(Resource):
     def get(self):
         return "test"
     def post(self):
+        print request.json
+        
         config = {}
         layers = []
         aelayers = []
@@ -138,6 +144,7 @@ class Train(Resource):
         pickle.dump(current_nn, f)
         return [score, fname]
 
+<<<<<<< HEAD
 class Test(Resource):
     def post(self):
         config = {}
@@ -148,10 +155,19 @@ class Test(Resource):
         print samples[0][1]
         return nn.predict(samples[0][0])
         
+=======
+
+>>>>>>> b79d2c952b0e610e5a88a1af8d2e134da7af1646
 api.add_resource(Train, "/train")
 api.add_resource(Test, "/test")
 
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  return response
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-
-

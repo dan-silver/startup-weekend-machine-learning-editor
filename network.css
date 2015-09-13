@@ -64,3 +64,31 @@
 .ui-sortable-helper {
 	cursor: move;
 }
+
+.settings {
+	padding: 10px;
+}
+
+.accuracyScore {
+	font-size: 500%;
+}
+
+.vertical {
+  display: inline-block;
+  width: 20%;
+  height: 40px;
+  -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+  transform: rotate(-90deg);
+}
+
+.results-col {
+	background: #f8f8f8;
+	height: 500px;
+	border: 1px solid #e7e7e7;
+}
+
+.thumb {
+	height: 75px;
+	border: 1px solid #000;
+	margin: 10px 5px 0 0;
+}
