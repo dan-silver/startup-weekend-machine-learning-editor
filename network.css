@@ -27,6 +27,10 @@
 	border: 1px dashed gray;
 }
 
+.layer .actions span {
+	margin: 0 5px;
+}
+
 .layer .actions {
 	opacity: 0;
 	position: absolute;
