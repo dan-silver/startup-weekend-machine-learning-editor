@@ -19,7 +19,8 @@ Layer.prototype.getSpacing = function() {
 app.controller('ctrl', function ($scope, $http) {
   $scope.nn_layers = [new Layer(5, 'linear'), new Layer(50, 'linear')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
-  $scope.num_iter = 10;
+  $scope.num_iter = 15;
+  $scope.learning_rate = 3;
   $scope.addLayer = function(type) {
     bootbox.prompt("How many neurons in this layer?", function(result) {
       if (result == "" || result === null) return;
@@ -38,21 +39,12 @@ app.controller('ctrl', function ($scope, $http) {
   $scope.trainNN = function() {
     var data = {
       num_iter: $scope.num_iter.toString(),
-      learning_rate: ($scope.learning_rate || 0.005).toString(),
+      learning_rate: (0.005).toString(),
       dataset: getFileName() || "wine",
       layers: $scope.nn_layers.map(function(a) { return {type:a.type.capitalizeFirstLetter(), size: a.size}})
     }
     // debugger;
-    $http.post('http://localhost:5000/train', {
-          "num_iter":"10",
-          "learning_rate":"0.005",
-          "dataset":"wine",
-          "layers":
-             [
-                {"type":"Linear","size":5},
-                {"type":"Linear","size":1}
-            ]
-        }).
+    $http.post('http://localhost:5000/train', data).
       then(function(response) {
         debugger;
     // this callback will be called asynchronously

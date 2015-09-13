@@ -261,8 +261,9 @@
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
-            <div>
-                <rzslider rz-slider-model="num_iter" rz-slider-ceil="30"></rzslider>
+            <div class="settings">
+                <h4>Number Iterations: {{num_iter}}</h4><rzslider rz-slider-model="num_iter" rz-slider-ceil="30"></rzslider>
+                <h4>Learning Rate: {{learning_rate}}</h4><rzslider rz-slider-model="learning_rate" rz-slider-ceil="5"></rzslider>
             </div>
         
             </div>
