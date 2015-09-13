@@ -18,7 +18,7 @@ Layer.prototype.getSpacing = function() {
 
 app.controller('ctrl', function ($scope, $http) {
   s = $scope;
-  $scope.nn_layers = [new Layer(12, 'rectifier'), new Layer(1, 'linear')]
+  $scope.nn_layers = [new Layer(500, 'Sigmoid'), new Layer(150, 'Sigmoid'), new Layer(10, 'Softmax')]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier', 'Sigmoid']
   $scope.num_iter = 15;
   $scope.learning_rate = 3;
@@ -55,7 +55,7 @@ app.controller('ctrl', function ($scope, $http) {
       dataset: $scope.dataset || 'handwrite',
       layers: $scope.nn_layers.map(function(a) { return {type:a.type.capitalizeFirstLetter(), size: a.size}})
     }
-    debugger;
+    // debugger;
     $http.post('http://localhost:5000/train', data).
     then(function(response) {
       $scope.accuracyScore = Math.round(parseFloat(response.data) * 10000) / 100
@@ -70,6 +70,7 @@ app.controller('ctrl', function ($scope, $http) {
 
     // Loop through the FileList and render image files as thumbnails.
     for (var i = 0, f; f = files[i]; i++) {
+      // debugger;
 
       // Only process image files.
       if (!f.type.match('image.*')) {
@@ -81,16 +82,17 @@ app.controller('ctrl', function ($scope, $http) {
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
         return function(e) {
-          $scope.results.push({data: e.target.result, result: null})
+          // var result = 
+          $scope.results.push({data: e.target.result, result: theFile.name[0]})
           $scope.$apply()
-          var payload = {data: getPixelData()}
-          debugger;
-          $http.post('http://localhost:5000/test', payload).
-          then(function(res) {
-            console.log('res', res)
-          }, function(err) {
-            console.log(err)
-          })
+          // var payload = {data1: getPixelData()}
+          // debugger;
+          // $http.post('http://localhost:5000/test', payload).
+          // then(function(res) {
+          //   console.log('res', res)
+          // }, function(err) {
+          //   console.log(err)
+          // })
         };
       })(f);
 
