@@ -15,7 +15,7 @@ app.controller('ctrl', function ($scope) {
   $scope.addLayer = function(type) {
     bootbox.prompt("How many neurons in this layer?", function(result) {
       if (result == "" || result === null) return;
-      $scope.nn_layers.push(new Layer(result, type))
+      $scope.nn_layers.push(new Layer(parseInt(result), type))
       $scope.$apply()
     })
   }
