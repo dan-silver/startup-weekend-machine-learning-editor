@@ -313,21 +313,21 @@
                     </div>
                     <div class="col-lg-3 results-col pull-right">
                         <h3>Test the Neural Network</h3>
-                        <form action="/file-upload" class="dropzone">
-                            <div class="fallback">
-                                <input name="file" type="file" />
-                            </div>
-                        </form>
+                        
+
+                        <input type="file" id="files" name="files[]" multiple />
+                        <output id="list"></output>
+
                         <hr>
-                        <div ng-if="history">
+                        <div ng-if="results.length > 0">
                             <h4>Results</h4>
-                            <table class="table table-striped table-hover">
+                            <table class="table table-bordered table-striped table-hover">
                                 <tr>
                                     <th>Data</th>
                                     <th>Result</th>
                                 </tr>
-                                <tr ng-repeat="history in history">
-                                    <td>{{history.data}}</td>
+                                <tr ng-repeat="history in results">
+                                    <td><img class="thumb" src="{{history.data}}" /></td>
                                     <td>{{history.result}}</td>
                                 </tr>
                             </table>
