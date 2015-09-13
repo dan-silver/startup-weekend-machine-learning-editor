@@ -7,7 +7,6 @@ from sklearn.cross_validation import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn import datasets
 from sknn.mlp import Classifier, Layer, Convolution
-from sknn.ae import AutoEncoder, Layer as ae
 import pickle
 import time
 import sys

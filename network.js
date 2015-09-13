@@ -18,8 +18,8 @@ Layer.prototype.getSpacing = function() {
 
 app.controller('ctrl', function ($scope, $http) {
   s = $scope;
-  $scope.nn_layers = [new Layer(5, 'linear'), new Layer(1, 'linear')]
-  $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
+  $scope.nn_layers = [new Layer(12, 'rectifier'), new Layer(1, 'linear')]
+  $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier', 'Sigmoid']
   $scope.num_iter = 15;
   $scope.learning_rate = 3;
   $scope.accuracyScore = 0;
@@ -51,11 +51,11 @@ app.controller('ctrl', function ($scope, $http) {
 
     var data = {
       num_iter: $scope.num_iter.toString(),
-      learning_rate: (0.005).toString(),
-      dataset: $scope.dataset,
+      learning_rate: (0.0001).toString(),
+      dataset: $scope.dataset || 'handwrite',
       layers: $scope.nn_layers.map(function(a) { return {type:a.type.capitalizeFirstLetter(), size: a.size}})
     }
-    // debugger;
+    debugger;
     $http.post('http://localhost:5000/train', data).
     then(function(response) {
       $scope.accuracyScore = Math.round(parseFloat(response.data) * 10000) / 100
@@ -81,9 +81,16 @@ app.controller('ctrl', function ($scope, $http) {
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
         return function(e) {
-          debugger;
           $scope.results.push({data: e.target.result, result: null})
           $scope.$apply()
+          var payload = {data: getPixelData()}
+          debugger;
+          $http.post('http://localhost:5000/test', payload).
+          then(function(res) {
+            console.log('res', res)
+          }, function(err) {
+            console.log(err)
+          })
         };
       })(f);
 
