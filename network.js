@@ -1,15 +1,22 @@
 var app = angular.module('app', ['ui.sortable']);
+var height = 350
 
 var Layer = function (size, type) {
   this.size = size
   this.type = type
 };
 
+Layer.prototype.getNumberOfCircles = function() {
+  return this.size > 10 ? 10 : this.size;
+};
 
+Layer.prototype.getSpacing = function() {
+  return height / (this.getNumberOfCircles() + 1);
+}
 
 app.controller('ctrl', function ($scope) {
   $scope.phones = 45
-  $scope.nn_layers = [new Layer(5), new Layer(20)]
+  $scope.nn_layers = [new Layer(5), new Layer(50)]
   $scope.layerTypes = ['Linear', 'Gaussian', 'Softmax', 'Rectifier']
 
   $scope.addLayer = function(type) {
@@ -19,6 +26,10 @@ app.controller('ctrl', function ($scope) {
       $scope.$apply()
     })
   }
+
+  setInterval(function() {
+    $scope.$apply()
+  }, 250)
 
   $scope.removeLayer = function(index) {
     $scope.nn_layers.splice(index, 1)
