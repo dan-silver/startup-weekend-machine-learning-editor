@@ -10,7 +10,7 @@
 }
 
 .layer {
-	width: 75px;
+	width: 90px;
 	height: 400px;
 	background: white;
 	float: left;
@@ -47,9 +47,17 @@
 
 .layerNumber {
 	position: absolute;
+	bottom: 12px;
+	margin-left: auto;
+	width: 55px;
+	text-align: center;
+}
+
+.layerType {
+	position: absolute;
 	bottom: 0px;
 	margin-left: auto;
-	width: 45px;
+	width: 55px;
 	text-align: center;
 }
 

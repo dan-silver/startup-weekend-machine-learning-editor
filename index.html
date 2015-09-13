@@ -267,15 +267,16 @@
                 <div class1="col-lg-12">
                         <ul id="sortable" ui-sortable ng-model="nn_layers">
                             <li class="layer" ng-repeat="layer in nn_layers">
-                                <svg width="50" height="350">
+                                <svg width="55" height="340">
                                     
-                                <circle cx="25" ng-attr-cy="{{($index + 1)* layer.getSpacing()}}" r="5" ng-repeat="n in [].constructor(layer.getNumberOfCircles()) track by $index" stroke="black" stroke-width="2" fill="red" />
+                                <circle cx="27" ng-attr-cy="{{($index + 1)* layer.getSpacing()}}" r="5" ng-repeat="n in [].constructor(layer.getNumberOfCircles()) track by $index" stroke="black" stroke-width="2" fill="red" />
                                 </svg>
                                 <div class="actions">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="editLayer($index)"></span>
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="removeLayer($index)"></span>
                                 </div>
                                 <h3 class="layerNumber">{{layer.size}}</h3>
+                                <h6 class="layerType">{{layer.type}}</h6>
                             </li>
                         </ul>
 
